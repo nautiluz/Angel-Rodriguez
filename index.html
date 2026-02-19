@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 
@@ -91,14 +90,14 @@
 
             <!-- Profile Header -->
             <div class="px-8 -mt-16 flex flex-col items-center text-center">
-                <div class="relative group mb-4">
+                <div class="relative group mb-6">
                     <div
-                        class="absolute -inset-1 bg-s4a-blue rounded-full blur opacity-25 group-hover:opacity-100 transition duration-1000">
+                        class="absolute -inset-2 bg-s4a-blue rounded-[40px] blur opacity-25 group-hover:opacity-100 transition duration-1000">
                     </div>
                     <img src="https://img.webme.com/pic/a/angelsoluciones/angelejecutivocopia.jpg" alt="Angel Rodriguez"
-                        class="relative w-32 h-32 rounded-full border-4 border-[#0a0f1e] object-cover shadow-2xl">
+                        class="relative w-44 h-56 rounded-[35px] border-4 border-[#0a0f1e] object-cover shadow-2xl">
                     <div
-                        class="absolute bottom-2 right-2 w-6 h-6 bg-s4a-accent border-4 border-[#0a0f1e] rounded-full animate-pulse">
+                        class="absolute bottom-4 right-4 w-6 h-6 bg-s4a-accent border-4 border-[#0a0f1e] rounded-full animate-pulse">
                     </div>
                 </div>
 
@@ -133,9 +132,9 @@
                 <h3 class="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em] px-2 mb-2">Servicios
                     Profesionales</h3>
 
-                <!-- Servicio 1 -->
-                <div
-                    class="w-full text-left glass-card border border-white/5 rounded-3xl p-5 hover:border-s4a-blue/50 transition-all group">
+                <!-- Servicio 1: Soporte -->
+                <div onclick="openAI('soporte')"
+                    class="w-full text-left glass-card border border-white/5 rounded-3xl p-5 hover:border-s4a-blue/50 transition-all group cursor-pointer active:scale-[0.98]">
                     <div class="flex items-center gap-4 mb-3">
                         <div class="w-10 h-10 rounded-xl bg-s4a-blue/10 flex items-center justify-center text-s4a-blue">
                             <i class="fas fa-user-cog"></i>
@@ -150,14 +149,15 @@
                             Integral</strong> para delegar su tecnología, gestión del puesto de trabajo y protocolos de
                         **Continuidad Operativa** para evitar paradas críticas.
                     </p>
-                    <a href="https://wa.me/584120317421?text=Hola%20Angel,%20necesito%20Soporte%20Técnico%20Profesional"
-                        class="text-[10px] font-black text-s4a-blue uppercase flex items-center gap-2">Solicitar
-                        Diagnóstico <i class="fas fa-arrow-right text-[8px]"></i></a>
+                    <button
+                        class="text-[10px] font-black text-s4a-blue border border-s4a-blue/20 px-4 py-2 rounded-xl uppercase flex items-center gap-2 group-hover:bg-s4a-blue group-hover:text-white transition-all">
+                        Iniciar Diagnóstico <i class="fas fa-robot text-[8px]"></i>
+                    </button>
                 </div>
 
-                <!-- Servicio 2 -->
-                <div
-                    class="w-full text-left glass-card border border-white/5 rounded-3xl p-5 hover:border-s4a-blue/50 transition-all group">
+                <!-- Servicio 2: Infraestructura -->
+                <div onclick="openAI('infra')"
+                    class="w-full text-left glass-card border border-white/5 rounded-3xl p-5 hover:border-s4a-blue/50 transition-all group cursor-pointer active:scale-[0.98]">
                     <div class="flex items-center gap-4 mb-3">
                         <div class="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center text-s4a-blue">
                             <i class="fas fa-server"></i>
@@ -172,14 +172,15 @@
                         con Alta Disponibilidad (Wintel/Azure). Infraestructuras 100% <strong>escalables</strong> que
                         crecen con su demanda de negocio.
                     </p>
-                    <a href="https://wa.me/584120317421?text=Ingeniero,%20necesito%20asesoría%20en%20Infraestructura"
-                        class="text-[10px] font-black text-s4a-blue uppercase flex items-center gap-2">Consultar
-                        Solución <i class="fas fa-arrow-right text-[8px]"></i></a>
+                    <button
+                        class="text-[10px] font-black text-s4a-blue border border-s4a-blue/20 px-4 py-2 rounded-xl uppercase flex items-center gap-2 group-hover:bg-s4a-blue group-hover:text-white transition-all">
+                        Consultar Arquitectura <i class="fas fa-robot text-[8px]"></i>
+                    </button>
                 </div>
 
-                <!-- Servicio 3 -->
-                <div
-                    class="w-full text-left glass-card border border-white/5 rounded-3xl p-5 hover:border-s4a-blue/50 transition-all group">
+                <!-- Servicio 3: Ciberseguridad -->
+                <div onclick="openAI('cyber')"
+                    class="w-full text-left glass-card border border-white/5 rounded-3xl p-5 hover:border-s4a-blue/50 transition-all group cursor-pointer active:scale-[0.98]">
                     <div class="flex items-center gap-4 mb-3">
                         <div
                             class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center text-s4a-accent">
@@ -195,14 +196,15 @@
                         internacionales y <strong>Monitoreo SOC</strong> constante para detectar amenazas en tiempo real
                         antes de que afecten su capital.
                     </p>
-                    <a href="https://wa.me/584120317421?text=Angel,%20me%20interesa%20blindar%20mi%20empresa"
-                        class="text-[10px] font-black text-s4a-accent uppercase flex items-center gap-2">Proteger Ahora
-                        <i class="fas fa-arrow-right text-[8px]"></i></a>
+                    <button
+                        class="text-[10px] font-black text-s4a-accent border border-s4a-accent/20 px-4 py-2 rounded-xl uppercase flex items-center gap-2 group-hover:bg-s4a-accent group-hover:text-black transition-all">
+                        Blindaje Preventivo <i class="fas fa-robot text-[8px]"></i>
+                    </button>
                 </div>
 
-                <!-- Servicio 4 -->
-                <div
-                    class="w-full text-left glass-card border border-white/5 rounded-3xl p-5 hover:border-s4a-blue/50 transition-all group">
+                <!-- Servicio 4: Automatización IA -->
+                <div onclick="openAI('ia')"
+                    class="w-full text-left glass-card border border-white/5 rounded-3xl p-5 hover:border-s4a-blue/50 transition-all group cursor-pointer active:scale-[0.98]">
                     <div class="flex items-center gap-4 mb-3">
                         <div
                             class="w-10 h-10 rounded-xl bg-purple-500/10 flex items-center justify-center text-purple-400">
@@ -218,9 +220,10 @@
                         que ejecutan tareas repetitivas y ofrecemos <strong>Consultoría Técnica IA</strong> para
                         integrar la eficiencia del futuro hoy.
                     </p>
-                    <a href="https://wa.me/584120317421?text=Hola,%20busco%20optimizar%20mis%20procesos%20con%20IA"
-                        class="text-[10px] font-black text-purple-400 uppercase flex items-center gap-2">Integrar IA <i
-                            class="fas fa-arrow-right text-[8px]"></i></a>
+                    <button
+                        class="text-[10px] font-black text-purple-400 border border-purple-400/20 px-4 py-2 rounded-xl uppercase flex items-center gap-2 group-hover:bg-purple-500 group-hover:text-white transition-all">
+                        Optimizar con IA <i class="fas fa-robot text-[8px]"></i>
+                    </button>
                 </div>
             </div>
 
@@ -289,67 +292,115 @@
 
             <div class="p-8 space-y-6 max-h-[70vh] overflow-y-auto custom-scrollbar">
 
-                <!-- STEP 1: DETALLE DEL SERVICIO -->
-                <div id="ia-step-1" class="space-y-4">
-                    <div class="bg-white/5 rounded-3xl p-6 border border-white/10">
-                        <h4 class="text-s4a-blue font-black uppercase text-[10px] tracking-widest mb-3">Alcance del
-                            Servicio</h4>
+                <!-- STEP 1: DETALLE DEL SERVICIO (VERDE NEÓN) -->
+                <div id="ia-step-1" class="space-y-4 text-center sm:text-left">
+                    <div
+                        class="bg-emerald-500 rounded-3xl p-6 border-4 border-white shadow-[0_0_30px_rgba(16,185,129,0.5)]">
+                        <h4 class="text-black font-black uppercase text-sm tracking-[0.3em] mb-3 text-center">
+                            🟢 PASO 1: ALCANCE PROFESIONAL</h4>
                         <div id="ia-service-full-desc"
-                            class="text-slate-300 text-sm leading-relaxed space-y-2 text-justify">
+                            class="text-black text-base leading-relaxed space-y-2 text-justify font-extrabold">
                             <!-- Inyectado por JS -->
                         </div>
                     </div>
+                    <div class="p-5 bg-white rounded-2xl border-4 border-emerald-500 flex items-start gap-4 shadow-2xl">
+                        <div
+                            class="w-12 h-12 rounded-full bg-emerald-500 flex items-center justify-center shrink-0 shadow-lg border-2 border-black">
+                            <i class="fas fa-eye text-black text-xl"></i>
+                        </div>
+                        <p class="text-[15px] text-black font-black leading-tight">
+                            <span
+                                class="bg-black text-emerald-400 px-2 py-0.5 rounded text-[10px] inline-block mb-1">INSTRUCCIÓN
+                                OBLIGATORIA</span><br>
+                            Revise el alcance del servicio. Si es lo que busca, presione el botón para iniciar el
+                            diagnóstico con Angel Rodriguez.
+                        </p>
+                    </div>
                     <button onclick="goToStep(2)"
-                        class="w-full bg-slate-800 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-slate-700 transition-all flex items-center justify-center gap-3">
-                        Continuar con Diagnóstico <i class="fas fa-chevron-right text-[10px]"></i>
+                        class="w-full bg-emerald-500 py-6 rounded-2xl font-black text-xl uppercase tracking-widest hover:bg-emerald-400 text-black transition-all flex items-center justify-center gap-3 shadow-[0_10px_40px_rgba(16,185,129,0.4)] active:scale-95 border-b-8 border-emerald-700">
+                        ACEPTAR E INICIAR <i class="fas fa-play"></i>
                     </button>
                 </div>
 
-                <!-- STEP 2: CONSULTA Y CONTACTO -->
+                <!-- STEP 2: CONSULTA (AMARILLO TRÁFICO) -->
                 <div id="ia-step-2" class="hidden space-y-6">
-                    <div class="space-y-4">
-                        <div>
-                            <label
-                                class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 block">Describe
-                                tu requerimiento o falla:</label>
-                            <textarea id="ia-prompt"
-                                class="w-full bg-slate-900/50 border border-white/10 rounded-2xl p-5 text-sm outline-none focus:border-s4a-blue transition-all resize-none placeholder:text-slate-700 h-32"
-                                placeholder="Ej: Mi enlace de internet se cae constantemente..."></textarea>
+                    <div
+                        class="p-5 bg-yellow-400 rounded-3xl border-4 border-white flex items-start gap-4 shadow-[0_0_30px_rgba(250,204,21,0.4)]">
+                        <div
+                            class="w-12 h-12 rounded-full bg-black flex items-center justify-center shrink-0 shadow-lg">
+                            <i class="fas fa-edit text-yellow-400 text-xl"></i>
                         </div>
-                        <div>
+                        <p class="text-[15px] text-black font-black leading-tight">
+                            <span class="bg-black text-yellow-400 px-2 py-0.5 rounded text-[10px] inline-block mb-1">🟡
+                                PASO 2: DIAGNÓSTICO</span><br>
+                            Escriba su reporte, use la cámara y deje su contacto. No deje campos vacíos para un análisis
+                            preciso.
+                        </p>
+                    </div>
+                    <div class="space-y-5">
+                        <div class="group">
                             <label
-                                class="text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 block italic">¿Cómo
-                                podemos contactarte para seguimiento?</label>
+                                class="text-sm font-black text-yellow-500 uppercase tracking-widest mb-2 block group-focus-within:text-white transition-colors">
+                                1. DETALLE DEL PROBLEMA:</label>
+                            <textarea id="ia-prompt"
+                                class="w-full bg-white border-4 border-yellow-500 rounded-2xl p-5 text-black text-lg font-black outline-none focus:ring-8 focus:ring-yellow-500/20 transition-all resize-none placeholder:text-slate-400 h-32 relative z-[160] shadow-2xl"
+                                placeholder="Describa su avería aquí..."></textarea>
+                        </div>
+
+                        <!-- Módulo de Cámara -->
+                        <div class="p-5 bg-white rounded-3xl border-4 border-yellow-500 shadow-2xl">
+                            <label class="text-xs font-black text-black uppercase tracking-widest mb-3 block italic">
+                                2. CAPTURAR EVIDENCIA (OPCIONAL):</label>
+                            <div class="flex items-center gap-4">
+                                <button onclick="document.getElementById('file-input').click()"
+                                    class="flex-1 py-4 bg-black rounded-2xl text-xs font-black text-yellow-400 uppercase tracking-[0.2em] hover:bg-slate-800 transition-all flex items-center justify-center gap-3 shadow-lg active:scale-95 border-b-4 border-slate-700">
+                                    <i class="fas fa-camera"></i> ACTIVAR CÁMARA
+                                </button>
+                                <input type="file" id="file-input" accept="image/*" capture="environment" class="hidden"
+                                    onchange="handleImage(this)">
+                                <div id="img-preview"
+                                    class="w-20 h-20 bg-black rounded-xl hidden border-4 border-yellow-500 p-0.5 overflow-hidden shadow-2xl">
+                                    <img src="" id="preview-src" class="w-full h-full object-cover rounded-lg">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="group">
+                            <label
+                                class="text-sm font-black text-yellow-500 uppercase tracking-widest mb-2 block group-focus-within:text-white transition-colors italic">
+                                3. SU NOMBRE Y CONTACTO:</label>
                             <input type="text" id="ia-contact-info"
-                                class="w-full bg-slate-900/50 border border-white/10 rounded-2xl p-4 text-sm outline-none focus:border-s4a-blue transition-all"
-                                placeholder="Tu nombre y teléfono (Ej: Juan 0412...)">
+                                class="w-full bg-white border-4 border-yellow-500 rounded-2xl p-5 text-black text-lg font-black outline-none focus:ring-8 focus:ring-yellow-500/20 transition-all relative z-[160] shadow-2xl"
+                                placeholder="Ej: Angel 0412-0317421">
                         </div>
                     </div>
 
                     <button onclick="analyzeIA()" id="ia-btn"
-                        class="w-full bg-s4a-blue py-5 rounded-2xl font-black text-lg flex items-center justify-center gap-3 group hover:bg-s4a-blue/80 transition-all shadow-xl shadow-blue-500/20">
-                        INICIAR ANÁLISIS TÉCNICO <i class="fas fa-bolt-lightning"></i>
+                        class="w-full bg-yellow-400 py-6 rounded-2xl font-black text-xl text-black flex items-center justify-center gap-4 group hover:scale-[1.02] transition-all shadow-[0_15px_40px_rgba(250,204,21,0.3)] border-b-8 border-yellow-600">
+                        GENERAR REPORTE IA <i class="fas fa-bolt-lightning text-black"></i>
                     </button>
                     <button onclick="goToStep(1)"
-                        class="w-full text-slate-500 text-[10px] font-black uppercase tracking-widest">Volver</button>
+                        class="w-full text-white text-[12px] font-black uppercase tracking-widest hover:text-yellow-400 transition-colors py-2">←
+                        VOLVER AL ALCANCE</button>
                 </div>
 
                 <!-- STEP 3: RESULTADO -->
-                <div id="ia-step-3" class="hidden space-y-6">
-                    <div class="bg-slate-900/40 rounded-3xl p-6 border-l-4 border-s4a-gold space-y-6" id="ia-result">
+                <div id="ia-step-3" class="hidden space-y-6 animate-fadeIn">
+                    <div class="bg-slate-900/40 rounded-[32px] p-8 border-l-4 border-s4a-gold shadow-inner"
+                        id="ia-result">
                         <!-- JS injects here -->
                     </div>
 
-                    <div class="mt-6 bg-s4a-accent/5 p-4 rounded-2xl border border-s4a-accent/20">
-                        <p class="text-[11px] text-slate-400 text-center leading-relaxed">
-                            <i class="fas fa-info-circle text-s4a-accent mr-2"></i>
-                            Enviaremos este resumen directo a Angel Rodriguez para procesar tu orden de servicio.
+                    <div class="p-4 bg-emerald-500/5 rounded-2xl border border-emerald-500/20 text-center">
+                        <p class="text-[11px] text-slate-400 leading-relaxed font-semibold">
+                            ⚠️ Presione el botón inferior para enviar el diagnóstico y la evidencia visual directamente
+                            a la consola de Angel Rodriguez.
                         </p>
                     </div>
 
                     <a id="wa-final-link" href="#"
-                        class="w-full bg-s4a-accent py-5 rounded-2xl font-black text-lg text-black flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform shadow-lg shadow-emerald-500/10">
-                        <i class="fab fa-whatsapp text-2xl"></i> AGENDAR CONSULTORÍA PROFESIONAL
+                        class="w-full bg-s4a-accent py-5 rounded-2xl font-black text-lg text-black flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform shadow-lg shadow-emerald-500/20">
+                        <i class="fab fa-whatsapp text-2xl"></i> CONFIRMAR POR WHATSAPP
                     </a>
                 </div>
             </div>
@@ -360,47 +411,41 @@
     <script>
         let activeContext = 'general';
         const contextData = {
-            'soporte': {
-                title: 'Especialista en Soporte',
-                desc: 'Análisis de estabilidad y outsourcing IT.',
-                fullDesc: `
-                    <strong>Outsourcing IT Integral:</strong> Delegue la responsabilidad técnica de su infraestructura para enfocarse en su core de negocio.<br><br>
-                    <strong>Gestión del Puesto de Trabajo:</strong> Resolución proactiva de incidencias en equipos de computación y estaciones operativas.<br><br>
-                    <strong>Continuidad Operativa:</strong> Implementación de protocolos robustos para asegurar que sus sistemas operen sin paradas críticas.
-                `,
-                wa: 'Soporte Técnico'
+            soporte: {
+                title: 'Soporte T\u00e9cnico (PC/Server)',
+                fullDesc: 'Diagn\u00f3stico de hardware, fallas de encendido, lentitud extrema o errores de Windows/BlueScreen.',
+                wa: 'Soporte T\u00e9cnico'
             },
-            'infra': {
-                title: 'Arquitecto de Infraestructura',
-                desc: 'Análisis de Redes y Data Centers.',
-                fullDesc: `
-                    <strong>Data Centers y Networking:</strong> Diseño y mantenimiento de infraestructuras de misión crítica.<br><br>
-                    <strong>Alta Disponibilidad:</strong> Configuración de entornos Wintel y Azure con redundancia garantizada.<br><br>
-                    <strong>Escalabilidad:</strong> Planificación técnica para infraestructuras que crecen junto a su demanda empresarial.
-                `,
-                wa: 'Infraestructura Crítica'
+            infra: {
+                title: 'Infraestructura Cr\u00edtica',
+                fullDesc: 'Optimizaci\u00f3n de Datacenters, Racks, Cableado Estructurado y Sistemas de Respaldo de Energ\u00eda.',
+                wa: 'Infraestructura'
             },
-            'cyber': {
-                title: 'Auditor de Seguridad',
-                desc: 'Detección de vulnerabilidades y blindaje.',
-                fullDesc: `
-                    <strong>Defensa Ransomware:</strong> Barreras avanzadas y planes de recuperación ante secuestro de datos.<br><br>
-                    <strong>Auditorías ISO 27001:</strong> Verificación de cumplimiento bajo estándares internacionales de seguridad.<br><br>
-                    <strong>Monitoreo SOC:</strong> Vigilancia 24/7 y respuesta inmediata ante amenazas perimetrales.
-                `,
-                wa: 'Ciberseguridad 360°'
+            cyber: {
+                title: 'Ciberseguridad y Redes',
+                fullDesc: 'Protecci\u00f3n contra ataques, configuraci\u00f3n de Firewalls, VPNs y Auditor\u00edas de Seguridad IT.',
+                wa: 'Ciberseguridad'
             },
-            'ia': {
-                title: 'Ingeniero de Automatización',
-                desc: 'Consultoría sobre Agentes Inteligentes y RPA.',
-                fullDesc: `
-                    <strong>Agentes Inteligentes:</strong> Implementación de sistemas cognitivos para toma de decisiones y atención automatizada.<br><br>
-                    <strong>RPA (Robotic Process Automation):</strong> Automatización de tareas repetitivas mediante software.<br><br>
-                    <strong>Consultoría IA:</strong> Diagnóstico de integración de Inteligencia Artificial en sus flujos actuales.
-                `,
-                wa: 'Automatización IA'
+            ia: {
+                title: 'Automatizaci\u00f3n con IA',
+                fullDesc: 'Implementaci\u00f3n de Agentes Inteligentes, Chatbots y Automatizaci\u00f3n de Procesos de Negocio.',
+                wa: 'Automatizaci\u00f3n IA'
             }
         };
+
+        // Lógica de Imagen / Cámara
+        let hasImage = false;
+        function handleImage(input) {
+            if (input.files && input.files[0]) {
+                hasImage = true;
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview-src').src = e.target.result;
+                    document.getElementById('img-preview').classList.remove('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
 
         function openAI(context) {
             activeContext = context;
@@ -410,9 +455,11 @@
             document.getElementById('ia-modal').classList.remove('hidden');
             goToStep(1);
 
-            // Limpiar campos
+            // Limpiar campos y estado de imagen
             document.getElementById('ia-prompt').value = "";
             document.getElementById('ia-contact-info').value = "";
+            document.getElementById('img-preview').classList.add('hidden');
+            hasImage = false;
             document.body.style.overflow = 'hidden';
         }
 
@@ -421,6 +468,16 @@
             document.getElementById('ia-step-2').classList.add('hidden');
             document.getElementById('ia-step-3').classList.add('hidden');
             document.getElementById('ia-step-' + step).classList.remove('hidden');
+
+            // Asegurar que el scroll del modal vuelva arriba en cada paso
+            document.querySelector('#ia-modal .overflow-y-auto').scrollTop = 0;
+
+            // Foco automático en campos para asegurar que se pueda escribir
+            if (step === 2) {
+                setTimeout(() => {
+                    document.getElementById('ia-prompt').focus();
+                }, 300);
+            }
         }
 
         function closeAI() {
@@ -428,63 +485,130 @@
             document.body.style.overflow = 'auto';
         }
 
+        // CONFIGURACI\u00d3N IA REAL (GEMINI) - Sistemas 4A v3.1 (Executive Fix)
+        const GEMINI_API_KEY = 'AIzaSyCCzF2wChwW3hTdq5B2k7IDZen4LTk1OXM';
+
+        async function callGemini(contents) {
+            const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY.trim()}`;
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        contents: contents,
+                        generationConfig: {
+                            maxOutputTokens: 1000,
+                            temperature: 0.2
+                        }
+                    })
+                });
+
+                const data = await response.json();
+                if (data.error) throw new Error(data.error.message);
+                return data;
+            } catch (err) {
+                console.error("Gemini API Error:", err.message);
+                return null;
+            }
+        }
+
         async function analyzeIA() {
-            const prompt = document.getElementById('ia-prompt').value;
-            const contact = document.getElementById('ia-contact-info').value;
+            const promptInput = document.getElementById('ia-prompt').value.trim();
+            const contact = document.getElementById('ia-contact-info').value.trim();
             const btn = document.getElementById('ia-btn');
             const resultBox = document.getElementById('ia-result');
 
-            if (!prompt.trim() || !contact.trim()) {
-                alert("Por favor describa su problema y deje sus datos de contacto.");
+            if (!promptInput || !contact) {
+                alert("ALERTA: Por favor describa el problema y deje su contacto.");
                 return;
             }
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> PROCESANDO DIAGNÓSTICO...';
+            btn.innerHTML = '<i class="fas fa-microchip fa-spin"></i> PROCESANDO AN\u00c1LISIS SENIOR...';
 
-            await new Promise(r => setTimeout(r, 1800));
+            const sysPrompt = `Eres el Ing. Angel Rodriguez de Sistemas 4A, un Consultor IT Senior.
+            CONTEXTO DEL SERVICIO: ${contextData[activeContext].title}.
+            OBJETIVO: Diagn\u00f3stico t\u00e9cnico ejecutivo y preciso.
+            INQUIETUD DEL CLIENTE: "${promptInput}".
+            ${hasImage ? "IMPORTANTE: Analiza la IMAGEN adjunta. Si es una falla de Sistema Operativo, Pantallazo Azul o Hardware, identif\u00edcalo exactamente. Menciona lo que observas en la imagen en tu RAZONAMIENTO." : "Sin imagen."}
+            
+            ESTRUCTURA (Responde directo, ejecutivo, sin negritas):
+            RAZONAMIENTO: (An\u00e1lisis detallado de la causa ra\u00edz y hallazgos en imagen)
+            TIPS: (3 pasos avanzados de resoluci\u00f3n t\u00e9cnica)
+            SLA: (Menciona tiempos de atenci\u00f3n 15-60 min remoto)
+            FINAL: (Acci\u00f3n breve para WhatsApp)`;
 
-            const lower = prompt.toLowerCase();
-            let reasoning = "";
-            let recommendation = "";
-
-            if (lower.includes('lento') || lower.includes('red') || lower.includes('internet')) {
-                reasoning = "Análisis de tráfico sugiere congestión en nodos de red o fallo en políticas de QoS.";
-                recommendation = "Realizar auditoría BGP y optimización de latencia en core.";
-            } else if (lower.includes('ataque') || lower.includes('virus') || lower.includes('seguridad')) {
-                reasoning = "Vulnerabilidad detectada en vectores de ataque tradicionales o falta de blindaje ISO 27001.";
-                recommendation = "Implementar defensa perimetral y blindaje de activos críticos.";
-            } else {
-                reasoning = "Se identificó una solicitud de mantenimiento estructural que requiere conocimiento senior.";
-                recommendation = "Sugerimos programar consultoría técnica para diagnóstico exhaustivo.";
+            let contents = [{ parts: [{ text: sysPrompt }] }];
+            if (hasImage) {
+                try {
+                    const src = document.getElementById('preview-src').src;
+                    const mimeType = src.split(';')[0].split(':')[1];
+                    const base64Data = src.split(',')[1];
+                    contents[0].parts.push({
+                        inline_data: { mime_type: mimeType, data: base64Data }
+                    });
+                } catch (e) { console.error("Error imagen:", e); }
             }
 
+            const data = await callGemini(contents);
+            let aiText = "";
+
+            if (data && data.candidates && data.candidates[0].content) {
+                aiText = data.candidates[0].content.parts[0].text;
+            } else {
+                console.warn("Fallback por error de API - Sistemas 4A.");
+                let fbReason = "Se ha detectado una inconsistencia cr\u00edtica que requiere escalamiento de Nivel 3.";
+                if (activeContext === 'soporte') fbReason = "Se ha detectado una degradaci\u00f3n en la integridad del Sistema Operativo o Hardware que compromete la estabilidad del equipo.";
+                else if (activeContext === 'infra') fbReason = "Se ha detectado una anomal\u00eda en la infraestructura de servidores que requiere intervenci\u00f3n en sitio.";
+                else if (activeContext === 'cyber') fbReason = "Se ha detectado un comportamiento an\u00f3malo que activa el protocolo de blindaje preventivo.";
+
+                aiText = `RAZONAMIENTO: ${fbReason}\nTIPS: 1. Reinicie el equipo. 2. Documente el error. 3. Aguarde contacto especializado.\nSLA: 15-60 min remoto.\nFINAL: Procediendo con escalamiento ejecutivo inmediato por Angel Rodriguez.`;
+            }
+
+            const getSection = (key, boundary) => {
+                const regex = new RegExp(`${key}:([\\s\\S]*?)(?=${boundary}|$)`, 'i');
+                const match = aiText.match(regex);
+                return match ? match[1].trim() : "An\u00e1lisis en curso.";
+            };
+
+            const reasoning = getSection('RAZONAMIENTO', 'TIPS');
+            const tips = getSection('TIPS', 'SLA');
+            const slaText = getSection('SLA', 'FINAL');
+            const fin = getSection('FINAL', '__FIN__');
+
             resultBox.innerHTML = `
-                <div><span class="text-s4a-blue font-black uppercase text-[9px] tracking-widest block mb-1">Análisis como Copiloto:</span> <p class="text-slate-300 text-sm italic">"${reasoning}"</p></div>
-                <div><span class="text-s4a-accent font-black uppercase text-[9px] tracking-widest block mb-1">Hoja de Ruta Sugerida:</span> <p class="text-white font-bold leading-tight">${recommendation}</p></div>
+                <div class="space-y-4 animate-fadeIn">
+                    <div class="border-l-4 border-s4a-blue pl-4">
+                        <h5 class="text-s4a-blue text-[9px] font-black uppercase tracking-widest mb-1">Diagn\u00f3stico Senior v3.2</h5>
+                        <p class="text-slate-100 text-sm leading-relaxed">${reasoning}</p>
+                    </div>
+                    <div class="bg-blue-600/5 p-4 rounded-2xl border border-blue-500/10">
+                        <h5 class="text-s4a-accent text-[9px] font-black uppercase tracking-widest mb-1">Pasos de Resoluci\u00f3n</h5>
+                        <p class="text-slate-300 text-xs italic">${tips}</p>
+                    </div>
+                </div>
             `;
 
             goToStep(3);
 
-            const message = `Sistemas 4A | Copiloto IA\n\n` +
-                `👤 Cliente: ${contact}\n` +
-                `🛠️ Servicio: ${contextData[activeContext].wa}\n` +
-                `📝 Inquietud: ${prompt}\n` +
-                `🧠 Diagnóstico IA: ${recommendation}\n\n` +
-                `Favor dar seguimiento urgente.`;
+            // REPORTE CONFIGURADO PARA WHATSAPP (Ajuste Ejecutivo Final)
+            let report = "SISTEMAS 4A | REPORTE T\u00c9CNICO SENIOR\n\n";
+            report += `* CLIENTE: ${contact}\n`;
+            report += `* SERVICIO: ${contextData[activeContext].wa}\n`;
+            report += `* INQUIETUD: ${promptInput}\n\n`;
+            report += `* DIAGN\u00d3STICO: ${reasoning}\n\n`;
+            report += `* COPILOTO IA: ${fin}\n`;
+            report += `* SLA: ${slaText}`;
 
-            document.getElementById('wa-final-link').href = `https://wa.me/584120317421?text=${encodeURIComponent(message)}`;
+            document.getElementById('wa-final-link').href = "https://wa.me/584120317421?text=" + encodeURIComponent(report);
 
             btn.disabled = false;
-            btn.innerHTML = 'INICIAR ANÁLISIS TÉCNICO <i class="fas fa-bolt-lightning"></i>';
+            btn.innerHTML = 'GENERAR REPORTE IA <i class="fas fa-bolt-lightning"></i>';
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            const cards = document.querySelectorAll('.glass-card');
-            if (cards[0]) cards[0].onclick = () => openAI('soporte');
-            if (cards[1]) cards[1].onclick = () => openAI('infra');
-            if (cards[2]) cards[2].onclick = () => openAI('cyber');
-            if (cards[3]) cards[3].onclick = () => openAI('ia');
+            console.log("Sistemas 4A: Motor IA Profesional v3.1 ACTIVO.");
         });
     </script>
 
