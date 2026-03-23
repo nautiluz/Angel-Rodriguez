@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.card-bg {
+    background: linear-gradient(135deg, #0a0f1e 0%, #040712 100%);
+}
+
+.service-hover:hover {
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.qr-placeholder {
+    background-image: radial-gradient(circle, #1e293b 1px, transparent 1px);
+    background-size: 10px 10px;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #3b82f6;
+    border-radius: 10px;
+}
