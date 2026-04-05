@@ -11,6 +11,11 @@
     <meta name="owner" content="Ing. Angel Rodriguez">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- TensorFlow.js + COCO-SSD para detección de objetos en tiempo real -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@4.22.0/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/coco-ssd@2.2.3/dist/coco-ssd.min.js"></script>
+    
     <style>
         .glass-card {
             background: rgba(255, 255, 255, 0.03);
@@ -1838,22 +1843,25 @@
                                 placeholder="Describa su avería aquí..."></textarea>
                         </div>
 
-                        <!-- Módulo de Cámara -->
+                        <!-- Módulo de Cámara AR en Tiempo Real -->
                         <div class="p-5 bg-white rounded-3xl border-4 border-yellow-500 shadow-2xl">
                             <label class="text-xs font-black text-black uppercase tracking-widest mb-3 block italic">
-                                2. CAPTURAR EVIDENCIA (OPCIONAL):</label>
+                                2. DETECCIÓN AR + IA EN TIEMPO REAL:</label>
+                            
+                            <!-- Video y Canvas para AR -->
+                            <video id="ar-video" autoplay playsinline class="w-full h-48 rounded-xl hidden object-cover"></video>
+                            <canvas id="ar-canvas" class="w-full h-48 rounded-xl hidden absolute pointer-events-none" style="width:100%;height:12rem;top:0;left:0;"></canvas>
+                            
                             <div class="flex items-center gap-4">
-                                <button onclick="document.getElementById('file-input').click()"
+                                <button onclick="toggleARCamera()" id="ar-toggle-btn"
                                     class="flex-1 py-4 bg-black rounded-2xl text-xs font-black text-yellow-400 uppercase tracking-[0.2em] hover:bg-slate-800 transition-all flex items-center justify-center gap-3 shadow-lg active:scale-95 border-b-4 border-slate-700">
-                                    <i class="fas fa-camera"></i> ACTIVAR CÁMARA
+                                    <i class="fas fa-camera"></i> <span id="ar-btn-text">ACTIVAR AR</span>
                                 </button>
-                                <input type="file" id="file-input" accept="image/*" capture="environment" class="hidden"
-                                    onchange="handleImage(this)">
-                                <div id="img-preview"
-                                    class="w-20 h-20 bg-black rounded-xl hidden border-4 border-yellow-500 p-0.5 overflow-hidden shadow-2xl">
-                                    <img src="" id="preview-src" class="w-full h-full object-cover rounded-lg">
+                                <div id="ar-status" class="hidden w-20 h-20 bg-black rounded-xl border-4 border-emerald-500 p-1 overflow-hidden">
+                                    <canvas id="ar-preview" class="w-full h-full object-cover rounded-lg"></canvas>
                                 </div>
                             </div>
+                            <p id="ar-objects" class="text-[10px] text-emerald-400 mt-2 font-bold">Objetos detectados: -</p>
                         </div>
 
                         <div class="group">
@@ -1890,8 +1898,13 @@
                     </div>
 
                     <a id="wa-final-link" href="#"
-                        class="w-full bg-s4a-accent py-5 rounded-2xl font-black text-lg text-black flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform shadow-lg shadow-emerald-500/20">
-                        <i class="fab fa-whatsapp text-2xl"></i> CONFIRMAR POR WHATSAPP
+                        class="w-full bg-[#25d366] py-5 rounded-2xl font-black text-lg text-black flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform shadow-lg shadow-green-500/20">
+                        <i class="fab fa-whatsapp text-2xl"></i> ENVIAR POR WHATSAPP
+                    </a>
+                    
+                    <a id="tg-final-link" href="#"
+                        class="w-full bg-purple-500 py-5 rounded-2xl font-black text-lg text-white flex items-center justify-center gap-3 hover:scale-[1.02] transition-transform shadow-lg shadow-purple-500/20 mt-3">
+                        <i class="fab fa-telegram text-2xl"></i> ENVIAR POR TELEGRAM
                     </a>
                 </div>
             </div>
@@ -1900,6 +1913,210 @@
 
     <!-- Scripts de Lógica Guíada & IA -->
     <script>
+        // ============================================
+        // CONFIGURACIÓN INTEGRAL - Sistemas 4A v4.0
+        // ============================================
+        const GEMINI_API_KEY = 'AIzaSyCCzF2wChwW3hTdq5B2k7IDZen4LTk1OXM';
+        const IMGBB_API_KEY = '4b08dca99a8774449ca593873510bba7';
+        const WHATSAPP_NUMBER = '584120317421';
+        const TELEGRAM_BOT = 'AngelSoluciones_Bot';
+
+        // TensorFlow.js - Variables de detección
+        let model = null;
+        let isDetecting = false;
+        let detectedObjects = [];
+        let videoStream = null;
+        let uploadedImageURL = '';
+        let arFrameCaptured = null;
+
+        // ============================================
+        // FUNCIONES DE TENSORFLOW.JS - AR EN TIEMPO REAL
+        // ============================================
+
+        // Cargar modelo COCO-SSD
+        async function loadDetectionModel() {
+            if (!model) {
+                console.log('📡 Cargando modelo COCO-SSD...');
+                model = await cocoSsd.load({
+                    base: 'lite_mobilenet_v2'
+                });
+                console.log('✅ Modelo cargado exitosamente');
+            }
+            return model;
+        }
+
+        // Detección de objetos en tiempo real
+        async function detectObjectsAR(video, canvas) {
+            if (!model) await loadDetectionModel();
+            
+            const predictions = await model.detect(video);
+            detectedObjects = predictions;
+            
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            predictions.forEach(prediction => {
+                const [x, y, width, height] = prediction.bbox;
+                const confidence = (prediction.score * 100).toFixed(0);
+                
+                // Color por tipo de objeto
+                const deviceTypes = ['laptop', 'cell phone', 'tv', 'monitor', 'keyboard', 'mouse', 'server', 'remote', 'book', 'scissors'];
+                const isDevice = deviceTypes.some(t => prediction.class.toLowerCase().includes(t));
+                const color = isDevice ? '#25d366' : '#fbbf24';
+                
+                // Dibujar rectángulo
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 3;
+                ctx.strokeRect(x, y, width, height);
+                
+                // Fondo para texto
+                ctx.fillStyle = color;
+                ctx.fillRect(x, y - 25, ctx.measureText(prediction.class).width + 60, 25);
+                
+                // Texto
+                ctx.fillStyle = '#000';
+                ctx.font = 'bold 12px Plus Jakarta Sans, sans-serif';
+                ctx.fillText(`${prediction.class} ${confidence}%`, x + 5, y - 8);
+            });
+            
+            // Actualizar texto de objetos detectados
+            const statusText = predictions.length > 0 
+                ? `🔍 Detectado: ${predictions.map(p => p.class).join(', ')}`
+                : '👁️ Escaneando...';
+            document.getElementById('ar-objects').textContent = statusText;
+            
+            return predictions;
+        }
+
+        // Iniciar cámara AR
+        async function startARCamera() {
+            const video = document.getElementById('ar-video');
+            const canvas = document.getElementById('ar-canvas');
+            const status = document.getElementById('ar-status');
+            const btnText = document.getElementById('ar-btn-text');
+            
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment', width: 640, height: 480 }
+                });
+                video.srcObject = stream;
+                videoStream = stream;
+                video.play();
+                
+                canvas.width = 640;
+                canvas.height = 480;
+                
+                video.classList.remove('hidden');
+                canvas.classList.remove('hidden');
+                status.classList.remove('hidden');
+                btnText.textContent = 'DETENER AR';
+                
+                isDetecting = true;
+                detectLoop(video, canvas);
+                
+                return true;
+            } catch (err) {
+                console.error('❌ Error cámara:', err);
+                alert('No se pudo acceder a la cámara. Verifica permisos.');
+                return false;
+            }
+        }
+
+        // Loop de detección
+        function detectLoop(video, canvas) {
+            if (!isDetecting) return;
+            
+            if (video.readyState === video.HAVE_ENOUGH_DATA) {
+                detectObjectsAR(video, canvas);
+            }
+            
+            requestAnimationFrame(() => detectLoop(video, canvas));
+        }
+
+        // Detener cámara AR
+        function stopARCamera() {
+            isDetecting = false;
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = null;
+            }
+            
+            const video = document.getElementById('ar-video');
+            const canvas = document.getElementById('ar-canvas');
+            const status = document.getElementById('ar-status');
+            const btnText = document.getElementById('ar-btn-text');
+            
+            video.classList.add('hidden');
+            canvas.classList.add('hidden');
+            status.classList.add('hidden');
+            btnText.textContent = 'ACTIVAR AR';
+            document.getElementById('ar-objects').textContent = 'Objetos detectados: -';
+        }
+
+        // Toggle cámara AR
+        async function toggleARCamera() {
+            const video = document.getElementById('ar-video');
+            
+            if (video.classList.contains('hidden')) {
+                const success = await startARCamera();
+                if (success) hasImage = true;
+            } else {
+                stopARCamera();
+                hasImage = false;
+            }
+        }
+
+        // Capturar frame actual
+        function captureARFrame() {
+            const video = document.getElementById('ar-video');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0);
+            return canvas.toDataURL('image/jpeg', 0.8);
+        }
+
+        // ============================================
+        // FUNCIONES DE IMGBB - SUBIR IMAGEN
+        // ============================================
+
+        async function uploadToImgBB(base64Image) {
+            try {
+                const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+                    method: 'POST',
+                    body: new URLSearchParams({
+                        image: base64Image.split(',')[1]
+                    })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    console.log('✅ Imagen subida:', data.data.url);
+                    return data.data.url;
+                }
+                throw new Error('Upload failed');
+            } catch (err) {
+                console.error('❌ ImgBB Error:', err);
+                return null;
+            }
+        }
+
+        // ============================================
+        // FUNCIONES DE CONTACTO - WHATSAPP + TELEGRAM
+        // ============================================
+
+        function getWhatsAppLink(message) {
+            return `https://api.whatsapp.com/send/?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(message)}&type=phone_number&app_absent=0`;
+        }
+
+        function getTelegramLink(message) {
+            return `https://t.me/${TELEGRAM_BOT}?text=${encodeURIComponent(message)}`;
+        }
+
+        // ============================================
+        // INICIO DEL CONTEXTO EXISTENTE
+        // ============================================
+        
         let activeContext = 'general';
         const contextData = {
             soporte: {
@@ -1976,9 +2193,7 @@
             document.body.style.overflow = 'auto';
         }
 
-        // CONFIGURACI\u00d3N IA REAL (GEMINI) - Sistemas 4A v3.1 (Executive Fix)
-        const GEMINI_API_KEY = 'AIzaSyCCzF2wChwW3hTdq5B2k7IDZen4LTk1OXM';
-
+        
         async function callGemini(contents) {
             const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY.trim()}`;
 
@@ -2011,56 +2226,87 @@
             const resultBox = document.getElementById('ia-result');
 
             if (!promptInput || !contact) {
-                alert("ALERTA: Por favor describa el problema y deje su contacto.");
+                alert("⚠️ Por favor describa el problema y deje su contacto.");
                 return;
             }
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fas fa-microchip fa-spin"></i> PROCESANDO AN\u00c1LISIS SENIOR...';
+            btn.innerHTML = '<i class="fas fa-microchip fa-spin"></i> PROCESANDO ANÁLISIS IA + AR...';
 
-            const sysPrompt = `Eres el Ing. Angel Rodriguez de Sistemas 4A, un Consultor IT Senior.
-            CONTEXTO DEL SERVICIO: ${contextData[activeContext].title}.
-            OBJETIVO: Diagn\u00f3stico t\u00e9cnico ejecutivo y preciso.
-            INQUIETUD DEL CLIENTE: "${promptInput}".
-            ${hasImage ? "IMPORTANTE: Analiza la IMAGEN adjunta. Si es una falla de Sistema Operativo, Pantallazo Azul o Hardware, identif\u00edcalo exactamente. Menciona lo que observas en la imagen en tu RAZONAMIENTO." : "Sin imagen."}
-            
-            ESTRUCTURA (Responde directo, ejecutivo, sin negritas):
-            RAZONAMIENTO: (An\u00e1lisis detallado de la causa ra\u00edz y hallazgos en imagen)
-            TIPS: (3 pasos avanzados de resoluci\u00f3n t\u00e9cnica)
-            SLA: (Menciona tiempos de atenci\u00f3n 15-60 min remoto)
-            FINAL: (Acci\u00f3n breve para WhatsApp)`;
+            // Capturar frame de AR si está activo
+            let imageBase64 = null;
+            if (isDetecting) {
+                btn.innerHTML = '<i class="fas fa-camera fa-spin"></i> CAPTURANDO IMAGEN AR...';
+                imageBase64 = captureARFrame();
+            }
 
+            // Subir imagen a ImgBB
+            if (imageBase64) {
+                btn.innerHTML = '<i class="fas fa-cloud-upload-alt fa-spin"></i> SUBIENDO IMAGEN...';
+                uploadedImageURL = await uploadToImgBB(imageBase64);
+            }
+
+            // Obtener objetos detectados
+            let objectsInfo = "No se detectaron objetos";
+            if (detectedObjects && detectedObjects.length > 0) {
+                objectsInfo = detectedObjects.map(o => 
+                    `${o.class} (${(o.score * 100).toFixed(0)}%)`
+                ).join(', ');
+            }
+
+            // Prompt mejorado para Gemini
+            const sysPrompt = `Eres el Ing. Angel Rodriguez, Consultor IT Senior con 15+ años de experiencia en diagnóstico de hardware y sistemas.
+
+CONTEXTO DEL SERVICIO: ${contextData[activeContext].title}.
+OBJETOS DETECTADOS EN TIEMPO REAL POR IA: ${objectsInfo}
+
+INQUIETUD DEL CLIENTE: "${promptInput}"
+
+IMPORTANTE: En tu RAZONAMIENTO debes:
+1. Identificar marca y modelo del equipo si es visible
+2. Describir la falla técnica específica
+3. Explicar la causa raíz del problema
+4. Proporcionar diagnóstico preciso y profesional
+
+FORMATO (responde solo texto plano, sin asteriscos ni negritas):
+RAZONAMIENTO: (Análisis técnico con marca, modelo y diagnóstico detallado)
+TIPS: (3 pasos específicos de resolución)
+SLA: (Tiempo de atención: 15-60 min remoto)
+FINAL: (Acción inmediata para el cliente)`;
+
+            // Preparar contenido para Gemini
             let contents = [{ parts: [{ text: sysPrompt }] }];
-            if (hasImage) {
+            if (imageBase64) {
                 try {
-                    const src = document.getElementById('preview-src').src;
-                    const mimeType = src.split(';')[0].split(':')[1];
-                    const base64Data = src.split(',')[1];
+                    const mimeType = 'image/jpeg';
+                    const base64Data = imageBase64.split(',')[1];
                     contents[0].parts.push({
                         inline_data: { mime_type: mimeType, data: base64Data }
                     });
                 } catch (e) { console.error("Error imagen:", e); }
             }
 
+            btn.innerHTML = '<i class="fas fa-brain fa-spin"></i> ANALIZANDO CON GEMINI...';
+            
             const data = await callGemini(contents);
             let aiText = "";
 
             if (data && data.candidates && data.candidates[0].content) {
                 aiText = data.candidates[0].content.parts[0].text;
             } else {
-                console.warn("Fallback por error de API - Sistemas 4A.");
-                let fbReason = "Se ha detectado una inconsistencia cr\u00edtica que requiere escalamiento de Nivel 3.";
-                if (activeContext === 'soporte') fbReason = "Se ha detectado una degradaci\u00f3n en la integridad del Sistema Operativo o Hardware que compromete la estabilidad del equipo.";
-                else if (activeContext === 'infra') fbReason = "Se ha detectado una anomal\u00eda en la infraestructura de servidores que requiere intervenci\u00f3n en sitio.";
-                else if (activeContext === 'cyber') fbReason = "Se ha detectado un comportamiento an\u00f3malo que activa el protocolo de blindaje preventivo.";
+                let fbReason = "Se ha detectado una inconsistencia crítica que requiere escalamiento.";
+                if (activeContext === 'soporte') fbReason = "Falla de hardware o sistema operativo que requiere diagnóstico en sitio.";
+                else if (activeContext === 'infra') fbReason = "Anomalía en infraestructura de servidores.";
+                else if (activeContext === 'cyber') fbReason = "Comportamiento anómalo que activa protocolo de seguridad.";
 
-                aiText = `RAZONAMIENTO: ${fbReason}\nTIPS: 1. Reinicie el equipo. 2. Documente el error. 3. Aguarde contacto especializado.\nSLA: 15-60 min remoto.\nFINAL: Procediendo con escalamiento ejecutivo inmediato por Angel Rodriguez.`;
+                aiText = `RAZONAMIENTO: ${fbReason}\nTIPS: 1. Documentar error. 2. Reiniciar equipo. 3. Contactar soporte.\nSLA: 15-60 min.\nFINAL: Contactando a Angel Rodriguez para diagnóstico.`;
             }
 
+            // Extraer secciones
             const getSection = (key, boundary) => {
                 const regex = new RegExp(`${key}:([\\s\\S]*?)(?=${boundary}|$)`, 'i');
                 const match = aiText.match(regex);
-                return match ? match[1].trim() : "An\u00e1lisis en curso.";
+                return match ? match[1].trim() : "Análisis en curso.";
             };
 
             const reasoning = getSection('RAZONAMIENTO', 'TIPS');
@@ -2068,38 +2314,62 @@
             const slaText = getSection('SLA', 'FINAL');
             const fin = getSection('FINAL', '__FIN__');
 
+            // Mostrar resultado
             resultBox.innerHTML = `
-                <div class="space-y-4 animate-fadeIn">
-                    <div class="border-l-4 border-s4a-blue pl-4">
-                        <h5 class="text-s4a-blue text-[9px] font-black uppercase tracking-widest mb-1">Diagn\u00f3stico Senior v3.2</h5>
+                <div class="space-y-4">
+                    <div class="border-l-4 border-emerald-500 pl-4">
+                        <h5 class="text-emerald-400 text-[9px] font-black uppercase tracking-widest mb-1">🔧 DIAGNÓSTICO TÉCNICO v4.0</h5>
                         <p class="text-slate-100 text-sm leading-relaxed">${reasoning}</p>
                     </div>
-                    <div class="bg-blue-600/5 p-4 rounded-2xl border border-blue-500/10">
-                        <h5 class="text-s4a-accent text-[9px] font-black uppercase tracking-widest mb-1">Pasos de Resoluci\u00f3n</h5>
-                        <p class="text-slate-300 text-xs italic">${tips}</p>
+                    ${detectedObjects.length > 0 ? `
+                    <div class="bg-emerald-500/10 p-4 rounded-2xl border border-emerald-500/20">
+                        <h5 class="text-emerald-400 text-[9px] font-black uppercase tracking-widest mb-1">🔍 OBJETOS DETECTADOS</h5>
+                        <p class="text-slate-300 text-xs">${objectsInfo}</p>
+                    </div>
+                    ` : ''}
+                    <div class="bg-yellow-500/10 p-4 rounded-2xl border border-yellow-500/20">
+                        <h5 class="text-yellow-400 text-[9px] font-black uppercase tracking-widest mb-1">💡 PASOS DE RESOLUCIÓN</h5>
+                        <p class="text-slate-300 text-xs">${tips}</p>
                     </div>
                 </div>
             `;
 
             goToStep(3);
 
-            // REPORTE CONFIGURADO PARA WHATSAPP (Ajuste Ejecutivo Final)
-            let report = "SISTEMAS 4A | REPORTE T\u00c9CNICO SENIOR\n\n";
-            report += `* CLIENTE: ${contact}\n`;
-            report += `* SERVICIO: ${contextData[activeContext].wa}\n`;
-            report += `* INQUIETUD: ${promptInput}\n\n`;
-            report += `* DIAGN\u00d3STICO: ${reasoning}\n\n`;
-            report += `* COPILOTO IA: ${fin}\n`;
-            report += `* SLA: ${slaText}`;
+            // Generar reporte para WhatsApp/Telegram
+            let report = "SISTEMAS 4A | REPORTE TÉCNICO SENIOR v4.0\n\n";
+            report += `👤 CLIENTE: ${contact}\n`;
+            report += `🔧 SERVICIO: ${contextData[activeContext].wa}\n`;
+            report += `📝 PROBLEMA: ${promptInput}\n\n`;
+            report += `🔍 ANÁLISIS IA:\n${objectsInfo}\n\n`;
+            report += `📊 DIAGNÓSTICO:\n${reasoning}\n\n`;
+            report += `💡 RESOLUCIÓN:\n${tips}\n\n`;
+            report += `⏱️ SLA: ${slaText}\n`;
+            report += `✅ ACCIÓN: ${fin}`;
+            
+            if (uploadedImageURL) {
+                report += `\n\n📷 IMAGEN: ${uploadedImageURL}`;
+            }
 
-            document.getElementById('wa-final-link').href = "https://wa.me/584120317421?text=" + encodeURIComponent(report);
+            // Configurar enlaces con API correcta
+            const waLink = getWhatsAppLink(report);
+            const tgLink = getTelegramLink(report);
 
+            document.getElementById('wa-final-link').href = waLink;
+            document.getElementById('tg-final-link').href = tgLink;
+
+            // Auto-enviar a WhatsApp después de 2 segundos
             btn.disabled = false;
-            btn.innerHTML = 'GENERAR REPORTE IA <i class="fas fa-bolt-lightning"></i>';
+            btn.innerHTML = 'ENVIAR REPORTE <i class="fab fa-whatsapp"></i>';
+            
+            // Abrir WhatsApp automáticamente
+            setTimeout(() => {
+                window.open(waLink, '_blank');
+            }, 1500);
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            console.log("Sistemas 4A: Motor IA Profesional v3.1 ACTIVO.");
+            console.log("Sistemas 4A: Motor IA Profesional v4.0 + AR + TensorFlow.js ACTIVO.");
         });
     </script>
 
